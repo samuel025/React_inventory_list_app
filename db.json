@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "name": "Samuel",
+      "price": "5",
+      "type": "Rec",
+      "brand": "SBO",
+      "id": 1
+    },
+    {
+      "name": "David",
+      "price": "5.0",
+      "type": "Rec",
+      "brand": "sef",
+      "id": 2
+    },
+    {
+      "name": "Magbego",
+      "price": "8",
+      "type": "Rec",
+      "brand": "ASB",
+      "id": 3
+    }
+  ]
+}

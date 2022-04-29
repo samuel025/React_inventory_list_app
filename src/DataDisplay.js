@@ -11,17 +11,19 @@ function ItemDisplay(props) {
                             <th scope="col">Price</th>
                             <th scope="col">Type</th>
                             <th scope="col">Brand</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {props.item.map((item) => {
+                    {props.items.map((item) => {
                         return (
                             <tr>
                                 <th scope="row">{item.id}</th>
-                                <th>{item.name}</th>
-                                <th>{item.price}</th>
-                                <th>{item.type}</th>
-                                <th>{item.brand}</th>
+                                <td>{item.name}</td>
+                                <td>{item.price}</td>
+                                <td>{item.type}</td>
+                                <td>{item.brand}</td>
+                                <td><button className="btn btn-danger" onClick={()=> {props.deleteItem(item)}}>Delete</button></td>
                             </tr>
                         );
                     })}

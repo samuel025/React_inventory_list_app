@@ -1,6 +1,6 @@
  import './App.css';
  import AddItem from './Additem';
- import {useState} from "react";
+ import {useEffect, useState} from "react";
  import SearchBar from './SearchBar';
  import ItemDisplay from './DataDisplay';
  import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,15 +10,49 @@ function App() {
   const [filters, setFilters] = useState({})
   const [data, setData] = useState({items: []})
 
+  useEffect(() => {
+    fetch("http://localhost:3000/items").then((response)=>{
+     return response.json()
+    }).then((data)=>{setData({items: data})
+  })}, [])
+
   const updateFilters = (searchParams) => {
     setFilters(searchParams)
   }
+
+  const deleteItem = (item) => {
+    const items = data["items"]
+    const requestOptions = {
+      method: "DELETE"
+    }
+    fetch(`http://localhost:3000/items/${item.id}`, requestOptions).then((response) => {
+      if (response.ok) {
+        const idx = items.indexOf(item);
+        items.splice(idx,1)
+        setData({items: items});
+      }
+    })
+  }
+
+
   const addItemtoData = (item) => {
         let items = data["items"]
-        item.id = items.length
-        items.push(item)
-        setData({items:items})
-        console.log(data)
+
+        const requestOptions = {
+          method:"POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body : JSON.stringify(item)
+        }
+        fetch("http://localhost:3000/items", requestOptions)
+        .then((response) => {
+          return response.json()
+          })
+        .then((data) => {
+          items.push(data)
+          setData({items:items})         
+        });
   }
   const filterData = (data) => {
     const filteredData = [];
@@ -49,7 +83,7 @@ function App() {
         <AddItem addItem = {addItemtoData}/> 
       </div>
       <div className='row mt-3'>
-        <ItemDisplay item = {filterData(data["items"])}/>
+        <ItemDisplay deleteItem={deleteItem} items = {filterData(data["items"])}/>
       </div>
       <div className='row mt-3'>
         <SearchBar updateSearchParams = {updateFilters} /> 
